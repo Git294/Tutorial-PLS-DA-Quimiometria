@@ -1,12 +1,12 @@
-%% Rotina desenvolvida em função do Artigo publicado no periodico Quimica nova
-% Fazer o donwload de todas as funções necessárias em:
+%% Routine developed according to the article published in Quimica nova
+% Download all the necessary functions from:
 % https://github.com/felipebachion/Tutorial-PLS-DA-Quimiometria
-% As funções e o banco de amostras também podem ser solicitados via e-mail:
+% The functions and the sample bank can also be requested via e-mail:
 % rjpoppi@unicamp.br
 
-%% 1) carregar o conjunto de dados
+%% 1) loading the dataset
 load amostras
-%% 2) plotar o cojunto completo de espectros
+%% 2) plot complete set of spectra
 figure(1)
 subplot(2,1,1)
 plot(num,X);
@@ -20,18 +20,18 @@ axis tight
 set(gca,'xtick',[],'FontSize',18,'FontName','Times New Roman');...
 set(gca,'xtickMode', 'auto');hold on;
 annotation('textbox', [0.8,0.3,0.1,0.1],'String', 'B','LineStyle','none');
-[ax,h1]=suplabel('Número de onda (cm^-^1)','x',[.11 .11 .84 .84]); 
-[ax,h2]=suplabel('Absorbância','y'); 
+[ax,h1]=suplabel('Wavenumber (cm^-^1)','x',[.11 .11 .84 .84]); 
+[ax,h2]=suplabel('Absorbance','y'); 
 set(h1,'FontSize',24,'FontName','Times New Roman') 
 set(h2,'FontSize',24,'FontName','Times New Roman') 
-%% 3) criar o vetor de classes para segregar os espectros de cada tipo de óleo
+%% 3) create the class vector to segregate the spectra of each type of oil
 y=[ones(108,1);2*ones(54,1);3*ones(54,1);4*ones(54,1)];
-%% 4) usar o algoritmo CALTESTDA para separar as amostras dos conjuntos de calibração, teste e preprocessar
-% observe que uma região um pouco maior que a região da impressão digital é
-% selecionada.
+%% 4) use the CALTESTDA algorithm to separate the samples from the calibration, test and preprocess sets
+% observe that a region slightly larger than the fingerprint region is
+% selected.
 [~,xcal,xval,ycal,yval]=caltestda(X(:,1300:1750),y,70,'k',[],[]);
-numc=num(1300:1750); % Realizando o corte da faixa espectral.
-%% 5) plotar os espectros de calibração e validação após a seleção da região espectral de interesse
+numc=num(1300:1750); % Performing the spectral band cutoff.
+%% 5) Plot the calibration and validation spectra after selecting the spectral region of interest
 figure(2)
 subplot(2,1,1);
 plot(numc,xcal)
@@ -39,19 +39,19 @@ axis tight
 set(gca,'xtick',[],'FontSize',18);...
     set(gca,'xtickMode', 'auto');hold on;
 annotation('textbox', [0.8,0.8,0.1,0.1],'String', 'A');
-title('Amostras de Calibração','fontsize',14);
+title('Calibration Samples','fontsize',14);
 subplot(2,1,2);
 plot(numc,xval)
 axis tight
 set(gca,'xtick',[],'FontSize',18);...
     set(gca,'xtickMode', 'auto');hold on;
 annotation('textbox', [0.8,0.3,0.1,0.1],'String', 'B');
-title('Amostras de Validação','fontsize',14); hold on
-[ax,h1]=suplabel('Número de onda (cm^-^1)','x',[.11 .11 .84 .84]); 
-[ax,h2]=suplabel('Absorbância','y',[.11 .11 .84 .84]); 
+title('Validation Samples','fontsize',14); hold on
+[ax,h1]=suplabel('Wavenumber (cm^-^1)','x',[.11 .11 .84 .84]); 
+[ax,h2]=suplabel('Absorbance','y',[.11 .11 .84 .84]); 
 set(h1,'FontSize',24) 
 set(h2,'FontSize',24) 
-%% 6) Usar a função vet_matrix para transformar um vetor y1 em uma matriz y2
+%% 6) Use the function vet_matrix to transform a vector y1 into a matrix y2
 %   y1[1        y2[1 0 0
 %      1           1 0 0
 %      2           0 1 0
@@ -61,18 +61,18 @@ set(h2,'FontSize',24)
 
 ycal = vet_matrix(ycal);
 yval = vet_matrix(yval);
-% digitar ycal e yval no pronpt da janela de comandos para visualizar a
-% criação da matriz de classes.
-%% 7) Usar a rotina PRETRAT para o pretamento dos espectros; Lembrar que não centrei na média
+% type ycal and yval in the prompt of the command window to view the
+% creation of the class matrix.
+%% 7) Use the PRETRAT routine for the spectra plotting; Remember that I did not focus on the mean
 [xcal,xval]=pretrat(xcal,xval,{'deriv';[9,2,1]});
 
-%% 8) plotar as matrizes de calibração e validação preprocessadas para a
-% visualização do preprocessamento espectral empregado.
+%% 8) plot the preprocessed calibration and validation matrices for
+% visualisation of the spectral preprocessing employed.
 figure(3)
 subplot(2,1,1);
 plot(numc,xcal)
 axis tight
-title('Amostras de calibração','fontname','Times New Roman','fontsize',14);
+title('Calibration Samples','fontname','Times New Roman','fontsize',14);
 hold on
 set(gca,'xtick',[],'FontSize',18,'FontName','Times New Roman');...
     set(gca,'xtickMode', 'auto');hold on;
@@ -80,36 +80,36 @@ annotation('textbox', [0.8,0.8,0.1,0.1],'String', 'A','LineStyle','none');
 subplot(2,1,2);
 plot(numc,xval)
 axis tight
-title('Amostras de validação','fontname','Times New Roman','fontsize',14); hold on
+title('Validation Samples','fontname','Times New Roman','fontsize',14); hold on
 set(gca,'xtick',[],'FontSize',18,'FontName','Times New Roman');...
     set(gca,'xtickMode', 'auto');hold on;
 annotation('textbox', [0.8,0.3,0.1,0.1],'String', 'B','LineStyle','none');
-[ax,h1]=suplabel('Número de onda (cm^-^1)','x',[.11 .11 .84 .84]); 
-[ax,h2]=suplabel('Primeira derivada','y',[.08 .08 .84 .84]); 
+[ax,h1]=suplabel('Wavenumber (cm^-^1)','x',[.11 .11 .84 .84]); 
+[ax,h2]=suplabel('First Derivative','y',[.08 .08 .84 .84]); 
 set(h1,'FontSize',24,'FontName','Times New Roman') 
 set(h2,'FontSize',24,'FontName','Times New Roman') 
-%% 9) validação Cruzada para determinar o Número de Variáveis Latentes
+%% 9) Cross-validation to determine the Number of Latent Variables
 cvvc = my_cross_validation(xcal,ycal,10,10,4,0.8);
 
 figure(4)
 plot(cvvc.porc_am_class_cor')
 set(gca,'xtick',[],'FontSize',18,'FontName','Times New Roman');...
 set(gca,'xtickMode', 'auto');hold on;
-legend ('Classe 1', 'Classe 2', 'Classe 3', 'Classe 4')
-xlabel('Número de variáveis latentes','FontSize',24,'FontName','Times New Roman');
-ylabel('Porcentagem de amostras classificadas corretamente','FontSize',24,'FontName','Times New Roman');
-disp(['Escolha o Número de variáveis latentes ','. ']);
+legend ('Class 1', 'Class 2', 'Class 3', 'Class 4')
+xlabel('Number of Latent Variables','FontSize',24,'FontName','Times New Roman');
+ylabel('Percentage of correctly classified samples','FontSize',24,'FontName','Times New Roman');
+disp(['Choose the Number of Latent Variables ','. ']);
 A=input('');
 
-%% 10) Analisando a presença de amostras anômalas para o número de variaveis latentes escolhido
+%% 10) Analysing the presence of anomalous samples for the number of latent variables chosen
 [model] = my_calc_qt_limits_cal (xcal,ycal,xval,A);
-% Amostras anômalas
+% Anomalous Samples
 am_anomalasQ=find(model.Qres>=model.qlim);
 am_anomalasT2=find(model.Thot>=model.tlim);
 a=ismember(am_anomalasQ,am_anomalasT2);
 am_anomalas=am_anomalasQ(1,a);
 
-%% 11) Eliminando estas amostras e selecionando novamente o número ideal de variáveis latentes.
+%% 11) Eliminating these samples and selecting again the optimal number of latent variables.
 xcal(am_anomalas,:)=[];
 ycal(am_anomalas,:)=[];
 

@@ -1,11 +1,11 @@
 function [model] = my_calc_qt_limits_cal (Xcal,Ycal,Xnew,nvl);
-% Rotina que calcula o modelo PLS-DA e os valores de Q e T2 e seus respectivos limites para cada
-% amostra. 
+% Routine that calculates the PLS-DA model and the values of Q and T2 and
+% their respective limits for each sample. 
 % INPUT
-% Xcal = Amostras da calibração
-% Ycal = matriz de classes
-% Xnew = Amostras da validação
-% nvl = Número de variaveis latentes
+% Xcal = Calibration Samples
+% Ycal = Classes Matrix
+% Xnew = Validation Samples
+% nvl = Number of Latent Variables
 
 % OUTPUT
 % model = Arquivo estrutura contendo o modelo PLS-DA
@@ -47,7 +47,7 @@ if license('test','statistics_toolbox')
     F = finv(lev_conf,comp,nobj-comp);
     tlim = (comp*(nobj - 1)/(nobj - comp))*F;
 else
-    disp(['Digite o Valor de F com (Namostras-Nº variaveis latentes -1) graus de liberdade ','. ']);
+    disp(['Enter F-Value with (Namostras-Nº latent variables -1) degrees of freedom ','. ']);
     tlim=input('');   
 end
    
@@ -82,7 +82,7 @@ term2    = t2*ho*(ho-1)/(t1.^2);
 qlim = t1*(1+term1+term2).^(1/ho);
 
 
-%% Modelo
+%% Model
 model.T = T;
 model.P = P;
 model.U = U;
@@ -97,7 +97,7 @@ model.Thot=Thot
 model.Ypre_cal=Yhat;
 % model.rescl=rescl;
 
-% Plotando para cada classe
+% Plotting for each class
 figure;
 for i = 1:size(Ycal,2)
     classes{i}=find(Ycal(:,i)==1)
@@ -114,7 +114,7 @@ vline(model.tlim)
 hline (model.qlim)
 legend ('show')
 xlabel ('Hotelling T^2')
-ylabel ('Resíduos em Q')
-title ('Amostras de Calibração')
+ylabel ('Residues in Q')
+title ('Calibration Samples')
 
 end
